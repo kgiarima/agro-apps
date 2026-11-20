@@ -17,7 +17,7 @@ final class WeatherApiProvider implements ForecastProvider
         if (!$this->isConfigured()) {
             throw new \RuntimeException('WEATHERAPI_KEY is not configured.');
         }
-        $query = http_build_query(['key' => $this->apiKey, 'q' => $location['latitude'] . ',' . $location['longitude'], 'days' => 14, 'aqi' => 'no', 'alerts' => 'no']);
+        $query = http_build_query(['key' => $this->apiKey, 'q' => $location['latitude'] . ',' . $location['longitude'], 'days' => 3, 'aqi' => 'no', 'alerts' => 'no']);
         $url = "https://api.weatherapi.com/v1/forecast.json?{$query}";
         $payload = $this->http->get($url);
         $timezone = $payload['location']['tz_id'] ?? $location['timezone'];

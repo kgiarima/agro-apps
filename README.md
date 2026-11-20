@@ -70,8 +70,9 @@ The requested core behavior is implemented: both providers are supported, data i
 
 ## Next steps
 
-- Add authontication/authorization
-- Add caching mechanism (Redis)
+- Add authontication/authorization.
+- Add caching mechanism (Redis).
+- Remove all hard-coded default secrets.
 - Replace the interval loop with a configurable cron/Kubernetes scheduled job and add a job lock to prevent overlapping collection runs.
 - Add pagination/cursors, structured logs, metrics, and alerting for repeated provider failures.
 - Add integration tests against PostgreSQL, contract fixtures for provider responses, and a CI pipeline that runs migrations, tests, and container checks.
@@ -80,7 +81,7 @@ The requested core behavior is implemented: both providers are supported, data i
 
 ## Additional notes
 
-- WeatherAPI limits the `days` parameter according to account plan; the adapters request 14 days, which is suitable for common free plans but can be reduced in the adapter configuration if required.
+- WeatherAPI limits the `days` parameter according to account plan; the adapters request 3 days, which is suitable for common free plans but can be reduced in the adapter configuration if required.
 - Open-Meteo is keyless but still has fair-use expectations. The once-daily cadence, one request per provider/location, short retry window, and stored snapshots are deliberately conservative.
 - The API stores timestamps as `TIMESTAMPTZ`; daily values represent midnight in the location/provider timezone before being normalized by PostgreSQL. All temperature values are Celsius and all precipitation values are millimetres.
 - To run the included adapter checks after the stack starts: `docker compose exec api php tests/ProviderMappingTest.php`.

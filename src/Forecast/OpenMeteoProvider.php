@@ -16,7 +16,7 @@ final class OpenMeteoProvider implements ForecastProvider
     {
         $query = http_build_query([
             'latitude' => $location['latitude'], 'longitude' => $location['longitude'], 'timezone' => $location['timezone'],
-            'hourly' => 'temperature_2m,precipitation', 'daily' => 'temperature_2m_mean,precipitation_sum', 'forecast_days' => 14,
+            'hourly' => 'temperature_2m,precipitation', 'daily' => 'temperature_2m_mean,precipitation_sum', 'forecast_days' => 3,
         ]);
         $url = "https://api.open-meteo.com/v1/forecast?{$query}";
         $payload = $this->http->get($url);
