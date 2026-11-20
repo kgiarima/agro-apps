@@ -1,0 +1,31 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types=1);
+
+require dirname(__DIR__) . '/src/bootstrap.php';
+
+use App\Database\Migrator;
+use App\Forecast\ForecastCollector;
+
+$command = $argv[1] ?? '';
+$container = app();
+
+switch ($command) {
+    case 'db:migrate':
+        (new Migrator($container['db']))->migrate();
+        echo "Migrations complete.\n";
+        break;
+    case 'forecast:fetch':
+        $locationId = null;
+        foreach (array_slice($argv, 2) as $argument) {
+            if (str_starts_with($argument, '--location=')) {
+                $locationId = (int) substr($argument, strlen('--location='));
+            }
+        }
+        $result = $container['collector']->collect($locationId);
+        echo json_encode($result, JSON_THROW_ON_ERROR) . PHP_EOL;
+        break;
+    default:
+        fwrite(STDERR, "Usage: php bin/console {db:migrate|forecast:fetch [--location=ID]}\n");
+        exit(1);
+}
